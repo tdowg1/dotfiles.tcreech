@@ -35,7 +35,7 @@ function precmd {
     fi  
     #
     # now let's change the color of the user name if we are root
-    if [ "$USER" = "root" ]; then
+    if [[ "$USER" = "root" || `whoami` = "root" ]]; then
         PR_USERCOLOR="${PR_BOLD_RED}"
     else
         PR_USERCOLOR="${PR_BOLD_DEFAULT}"
@@ -134,6 +134,19 @@ setcrapimightnotneed() {
     else
        # Assuming we are using BSD ls.
        alias ls='ls -G '
+    fi
+
+    # Unless we are running SunOS... then do some weird stuff.
+    if [ `uname` = "SunOS" ]; then
+       if [ -x /usr/gnu/bin/ls ]; then 
+          alias ls='/usr/gnu/bin/ls --color=auto '
+       else
+          unalias ls
+       fi
+       # also set up a handy pfzsh
+       function pfzsh {
+         pfexec $* zsh
+      }
     fi
 
     alias vim='vim -X '
