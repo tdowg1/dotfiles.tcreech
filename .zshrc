@@ -317,6 +317,12 @@ setcrapimightnotneed() {
     vimfind(){
             vim -p `gfind $*`
     }
+
+    # Function to make Accurev help suck less
+    # (Is that a pun somehow?)
+    achelp(){
+            accurev help $* | less -FX
+    }
     
     # On USR2, source a file. Used for global-export.
     TRAPUSR2(){
@@ -330,7 +336,7 @@ setcrapimightnotneed() {
        #   there is no chance of it being readable by other users.
        chmod 600 ~/.global_export_tmp
        echo "export $*" >> ~/.global_export_tmp
-       killall -USR2 zsh
+       pkill -USR2 zsh
     }
 
 }
